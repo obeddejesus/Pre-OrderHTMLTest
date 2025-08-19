@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Device Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f7f7fb; padding:40px; }
+    .form-container { max-width:640px; margin:auto; background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    h2 { margin-top:0; }
+    label { display:block; margin-top:12px; font-weight:bold; }
+    input, select, button {
+      width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:4px; box-sizing:border-box;
+    }
+    button { background:#0067b8; color:#fff; font-weight:bold; border:none; cursor:pointer; margin-top:16px; }
+    button:hover { background:#005299; }
+    .hidden { display:none; }
+    .success { color:green; margin-top:12px; }
+    .error { color:red; margin-top:12px; white-space:pre-wrap; }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Customer Device Request</h2>
+    <form id="flowForm">
+
+      <div class="row">
+        <div>
+          <label for="firstName">First Name</label>
+          <input id="firstName" name="firstName" required />
+        </div>
+        <div>
+          <label for="lastName">Last Name</label>
+          <input id="lastName" name="lastName" required />
+        </div>
+      </div>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required />
+
+      <label for="business">Business Name</label>
+      <input id="business" name="business" />
+
+      <label for="contact">Contact Number</label>
+      <input id="contact" name="contact" required pattern="[0-9]+" title="Only numbers allowed" />
+
+      <label for="provider">Provider</label>
+      <select id="provider" name="provider" required>
+        <option value="">-- Select --</option>
+        <option value="LibertyPR">LibertyPR</option>
+        <option value="T-Mobile">T-Mobile</option>
+        <option value="Claro">Claro</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <!-- LibertyPR extra question -->
+      <div id="libertySection" class="hidden">
+        <label for="action">What do you want to do?</label>
+        <select id="action" name="action">
+          <option value="">-- Select --</option>
+          <option value="New Line">New Line</option>
+          <option value="Change Device">Change Device</option>
+        </select>
+      </div>
+
+      <!-- Device selection -->
+      <label for="device">Device Model</label>
+      <select id="device" name="device" required>
+        <option value="">-- Select --</option>
+        <option value="iPhone 17">iPhone 17</option>
+        <option value="iPhone 17 Air">iPhone 17 Air</option>
+        <option value="iPhone 17 Pro">iPhone 17 Pro</option>
+        <option value="iPhone 17 Pro Max">iPhone 17 Pro Max</option>
+      </select>
+
+      <!-- Device Color (dynamic) -->
+      <div id="colorSection" class="hidden">
+        <label for="color">Device Color</label>
+        <select id="color" name="color"></select>
+      </div>
+
+      <!-- Device Capacity (dynamic) -->
+      <div id="capacitySection" class="hidden">
+        <label for="capacity">Device Capacity</label>
+        <select id="capacity" name="capacity"></select>
+      </div>
+
+      <button type="submit">Submit</button>
+      <div id="msg"></div>
+    </form>
+  </div>
+
+  <script>
+    const FLOW_URL = "https://prod-68.westus.logic.azure.com:443/workflows/477d1e2a09fb4d5eba05a9c4c8800a98/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EzBolja5p4JJdK2xwH-0Szv77OXsKj3qYjn1HsfAcbU"; // 🔗 Replace with your Power Automate Flow URL
+
+    const providerSelect = document.getElementById('provider');
+    const libertySection = document.getElementById('libertySection');
+    const deviceSelect   = document.getElementById('device');
+    const colorSection   = document.getElementById('colorSection');
+    const colorSelect    = document.getElementById('color');
+    const capacitySection= document.getElementById('capacitySection');
+    const capacitySelect = document.getElementById('capacity');
+
+    // Device options
+    const deviceOptions = {
+      "iPhone 17": {
+        colors: ["Brown", "Yellow"],
+        capacities: ["128GB", "256GB"]
+      },
+      "iPhone 17 Air": {
+        colors: ["Clear", "Blue"],
+        capacities: ["128GB", "256GB"]
+      },
+      "iPhone 17 Pro": {
+        colors: ["Gold", "Titan"],
+        capacities: ["256GB", "512GB"]
+      },
+      "iPhone 17 Pro Max": {
+        colors: ["Titanium", "Natural"],
+        capacities: ["256GB", "512GB", "1TB"]
+      }
+    };
+
+    // Show/hide Liberty section
+    providerSelect.addEventListener('change', () => {
+      libertySection.classList.toggle('hidden', providerSelect.value !== "LibertyPR");
+    });
+
+    // Update color/capacity dropdowns when device changes
+    deviceSelect.addEventListener('change', () => {
+      const device = deviceSelect.value;
+      if (deviceOptions[device]) {
+        // Populate colors
+        colorSelect.innerHTML = "<option value=''>-- Select --</option>" +
+          deviceOptions[device].colors.map(c => `<option value="${c}">${c}</option>`).join("");
+        colorSection.classList.remove('hidden');
+        colorSelect.required = true;
+
+        // Populate capacities
+        capacitySelect.innerHTML = "<option value=''>-- Select --</option>" +
+          deviceOptions[device].capacities.map(c => `<option value="${c}">${c}</option>`).join("");
+        capacitySection.classList.remove('hidden');
+        capacitySelect.required = true;
+      } else {
+        colorSection.classList.add('hidden');
+        capacitySection.classList.add('hidden');
+        colorSelect.required = false;
+        capacitySelect.required = false;
+      }
+    });
+
+    const form = document.getElementById('flowForm');
+    const msg  = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = "Sending…";
+      msg.className = "";
+
+      // Base payload
+      const payload = {
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        business: document.getElementById('business').value.trim(),
+        contact: document.getElementById('contact').value.trim(),
+        provider: providerSelect.value,
+        device: deviceSelect.value,
+        color: colorSelect.value,
+        capacity: capacitySelect.value,
+        submittedAt: new Date().toISOString()
+      };
+
+      // LibertyPR: include extra field
+      if (providerSelect.value === "LibertyPR") {
+        payload.action = document.getElementById('action').value;
+      }
+
+      try {
+        const res = await fetch(FLOW_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        if (res.ok) {
+          msg.className = "success";
+          msg.textContent = "Submitted successfully ✅";
+          form.reset();
+          libertySection.classList.add('hidden');
+          colorSection.classList.add('hidden');
+          capacitySection.classList.add('hidden');
+        } else {
+          msg.className = "error";
+          msg.textContent = "Error: " + text;
+        }
+      } catch (err) {
+        msg.className = "error";
+        msg.textContent = "Failed to submit: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
