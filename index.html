@@ -12,7 +12,7 @@
     input, select, button {
       width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:4px; box-sizing:border-box;
     }
-    button { background:#0067b8; color:#fff; font-weight:bold; border:none; cursor:pointer; margin-top:16px; }
+    button { background:#00BBFF; color:#fff; font-weight:bold; border:none; cursor:pointer; margin-top:16px; }
     button:hover { background:#005299; }
     .hidden { display:none; }
     .success { color:green; margin-top:12px; }
@@ -27,22 +27,22 @@
 
       <div class="row">
         <div>
-          <label for="firstName">First Name</label>
+          <label for="firstName">First Name*</label>
           <input id="firstName" name="firstName" required />
         </div>
         <div>
-          <label for="lastName">Last Name</label>
+          <label for="lastName">Last Name*</label>
           <input id="lastName" name="lastName" required />
         </div>
       </div>
 
-      <label for="email">Email</label>
+      <label for="email">Email*</label>
       <input id="email" name="email" type="email" required />
 
-      <label for="business">Business Name</label>
+      <label for="business">Business Name*</label>
       <input id="business" name="business" />
 
-      <label for="contact">Contact Number</label>
+      <label for="contact">Contact Number*</label>
       <input 
         id="contact" 
         name="contact" 
@@ -53,7 +53,7 @@
         maxlength="15"
       />
 
-      <label for="provider">Provider</label>
+      <label for="provider">Provider*</label>
       <select id="provider" name="provider" required>
         <option value="">-- Select --</option>
         <option value="LibertyPR">LibertyPR</option>
@@ -64,7 +64,7 @@
 
       <!-- LibertyPR extra question -->
       <div id="libertySection" class="hidden">
-        <label for="action">What do you want to do?</label>
+        <label for="action">What do you want to do?*</label>
         <select id="action" name="action">
           <option value="">-- Select --</option>
           <option value="New Line">New Line</option>
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Device selection -->
-      <label for="device">Device Model</label>
+      <label for="device">Device Model*</label>
       <select id="device" name="device" required>
         <option value="">-- Select --</option>
         <option value="iPhone 17">iPhone 17</option>
@@ -84,13 +84,13 @@
 
       <!-- Device Color (dynamic) -->
       <div id="colorSection" class="hidden">
-        <label for="color">Device Color</label>
+        <label for="color">Device Color*</label>
         <select id="color" name="color"></select>
       </div>
 
       <!-- Device Capacity (dynamic) -->
       <div id="capacitySection" class="hidden">
-        <label for="capacity">Device Capacity</label>
+        <label for="capacity">Device Capacity*</label>
         <select id="capacity" name="capacity"></select>
       </div>
 
