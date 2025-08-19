@@ -43,7 +43,15 @@
       <input id="business" name="business" />
 
       <label for="contact">Contact Number</label>
-      <input id="contact" name="contact" required pattern="[0-9]+" title="Only numbers allowed" />
+      <input 
+        id="contact" 
+        name="contact" 
+        type="text" 
+        required 
+        pattern="[0-9]+" 
+        title="Only digits allowed (no spaces or special characters)" 
+        maxlength="15"
+      />
 
       <label for="provider">Provider</label>
       <select id="provider" name="provider" required>
@@ -92,7 +100,7 @@
   </div>
 
   <script>
-    const FLOW_URL = "https://prod-68.westus.logic.azure.com:443/workflows/477d1e2a09fb4d5eba05a9c4c8800a98/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EzBolja5p4JJdK2xwH-0Szv77OXsKj3qYjn1HsfAcbU"; // 🔗 Replace with your Power Automate Flow URL
+    const FLOW_URL = "https://prod-94.westus.logic.azure.com:443/workflows/47c6152af04f461989dfac1d53758bfd/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nudMTJt7ZwzIfnXvhbZxfTSmJEu9hjDpds0ucz2VYts"; // 🔗 Replace with your Power Automate Flow URL
 
     const providerSelect = document.getElementById('provider');
     const libertySection = document.getElementById('libertySection');
@@ -101,6 +109,7 @@
     const colorSelect    = document.getElementById('color');
     const capacitySection= document.getElementById('capacitySection');
     const capacitySelect = document.getElementById('capacity');
+    const contactField   = document.getElementById('contact');
 
     // Device options
     const deviceOptions = {
@@ -158,13 +167,20 @@
       msg.textContent = "Sending…";
       msg.className = "";
 
+      // Extra check: Contact Number must be only digits
+      if (!/^[0-9]+$/.test(contactField.value)) {
+        msg.className = "error";
+        msg.textContent = "Contact number must contain only digits (no spaces or special characters)";
+        return;
+      }
+
       // Base payload
       const payload = {
         firstName: document.getElementById('firstName').value.trim(),
         lastName: document.getElementById('lastName').value.trim(),
         email: document.getElementById('email').value.trim(),
         business: document.getElementById('business').value.trim(),
-        contact: document.getElementById('contact').value.trim(),
+        contact: contactField.value.trim(),
         provider: providerSelect.value,
         device: deviceSelect.value,
         color: colorSelect.value,
@@ -204,4 +220,3 @@
   </script>
 </body>
 </html>
-
