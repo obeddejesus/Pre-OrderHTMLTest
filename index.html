@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -17,7 +17,6 @@
     .hidden { display:none; }
     .success { color:green; margin-top:12px; }
     .error { color:red; margin-top:12px; white-space:pre-wrap; }
-    .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   </style>
 </head>
 <body>
@@ -25,57 +24,53 @@
     <h2>Customer Device Request</h2>
     <form id="flowForm">
 
-      <div class="row">
-        <div>
-          <label for="firstName">First Name*</label>
-          <input id="firstName" name="firstName" required />
-        </div>
-        <div>
-          <label for="lastName">Last Name*</label>
-          <input id="lastName" name="lastName" required />
-        </div>
-      </div>
+      <!-- Nombre y Apellido -->
+      <label for="firstName">Nombre*</label>
+      <input id="firstName" name="firstName" required />
 
-      <label for="email">Email*</label>
+      <label for="lastName">Apellido*</label>
+      <input id="lastName" name="lastName" required />
+
+      <label for="email">Correo electrónico*</label>
       <input id="email" name="email" type="email" required />
 
-      <label for="business">Business Name*</label>
-      <input id="business" name="business" />
+      <label for="business">Nombre del negocio*</label>
+      <input id="business" name="business" required />
 
-      <label for="contact">Contact Number*</label>
+      <label for="contact">Número de contacto*</label>
       <input 
         id="contact" 
         name="contact" 
         type="text" 
         required 
         pattern="[0-9]+" 
-        title="Only digits allowed (no spaces or special characters)" 
+        title="Solo se permiten dígitos (sin espacios ni caracteres especiales)" 
         maxlength="15"
       />
 
-      <label for="provider">Provider*</label>
+      <label for="provider">Proveedor*</label>
       <select id="provider" name="provider" required>
-        <option value="">-- Select --</option>
+        <option value="">-- Seleccionar --</option>
         <option value="LibertyPR">LibertyPR</option>
         <option value="T-Mobile">T-Mobile</option>
         <option value="Claro">Claro</option>
-        <option value="Other">Other</option>
+        <option value="Other">Otro</option>
       </select>
 
       <!-- LibertyPR extra question -->
       <div id="libertySection" class="hidden">
-        <label for="action">What do you want to do?*</label>
+        <label for="action">¿Qué deseas hacer?*</label>
         <select id="action" name="action">
-          <option value="">-- Select --</option>
-          <option value="New Line">New Line</option>
-          <option value="Change Device">Change Device</option>
+          <option value="">-- Seleccionar --</option>
+          <option value="New Line">Nueva línea</option>
+          <option value="Change Device">Cambio de equipo</option>
         </select>
       </div>
 
       <!-- Device selection -->
-      <label for="device">Device Model*</label>
+      <label for="device">Modelo del dispositivo*</label>
       <select id="device" name="device" required>
-        <option value="">-- Select --</option>
+        <option value="">-- Seleccionar --</option>
         <option value="iPhone 17">iPhone 17</option>
         <option value="iPhone 17 Air">iPhone 17 Air</option>
         <option value="iPhone 17 Pro">iPhone 17 Pro</option>
@@ -84,23 +79,38 @@
 
       <!-- Device Color (dynamic) -->
       <div id="colorSection" class="hidden">
-        <label for="color">Device Color*</label>
+        <label for="color">Color del dispositivo*</label>
         <select id="color" name="color"></select>
       </div>
 
       <!-- Device Capacity (dynamic) -->
       <div id="capacitySection" class="hidden">
-        <label for="capacity">Device Capacity*</label>
+        <label for="capacity">Capacidad del dispositivo*</label>
         <select id="capacity" name="capacity"></select>
       </div>
 
-      <button type="submit">Submit</button>
+      <!-- Consent -->
+      <div style="margin-top:16px; display:flex; align-items:flex-start; gap:8px;">
+        <input 
+          type="checkbox" 
+          id="consent" 
+          name="consent" 
+          required 
+          style="width:18px; height:18px; margin-top:2px; cursor:pointer;"
+          aria-label="Consentimiento"
+        />
+        <label for="consent" style="font-size:14px; color:#333; line-height:1.4; cursor:pointer;">
+          ¡Permítenos conectar contigo! Al completar este formulario aceptas recibir comunicación sobre ofertas, promociones y servicios de Liberty Business.
+        </label>
+      </div>
+
+      <button type="submit">Enviar</button>
       <div id="msg"></div>
     </form>
   </div>
 
   <script>
-    const FLOW_URL = "https://prod-68.westus.logic.azure.com:443/workflows/477d1e2a09fb4d5eba05a9c4c8800a98/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EzBolja5p4JJdK2xwH-0Szv77OXsKj3qYjn1HsfAcbU"; // 🔗 Replace with your Power Automate Flow URL
+    const FLOW_URL = "https://prod-68.westus.logic.azure.com:443/workflows/477d1e2a09fb4d5eba05a9c4c8800a98/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EzBolja5p4JJdK2xwH-0Szv77OXsKj3qYjn1HsfAcbU"; 
 
     const providerSelect = document.getElementById('provider');
     const libertySection = document.getElementById('libertySection');
@@ -111,43 +121,29 @@
     const capacitySelect = document.getElementById('capacity');
     const contactField   = document.getElementById('contact');
 
-    // Device options
+    // Opciones de dispositivos
     const deviceOptions = {
-      "iPhone 17": {
-        colors: ["Brown", "Yellow"],
-        capacities: ["128GB", "256GB"]
-      },
-      "iPhone 17 Air": {
-        colors: ["Clear", "Blue"],
-        capacities: ["128GB", "256GB"]
-      },
-      "iPhone 17 Pro": {
-        colors: ["Gold", "Titan"],
-        capacities: ["256GB", "512GB"]
-      },
-      "iPhone 17 Pro Max": {
-        colors: ["Titanium", "Natural"],
-        capacities: ["256GB", "512GB", "1TB"]
-      }
+      "iPhone 17": { colors: ["Brown", "Yellow"], capacities: ["128GB", "256GB"] },
+      "iPhone 17 Air": { colors: ["Clear", "Blue"], capacities: ["128GB", "256GB"] },
+      "iPhone 17 Pro": { colors: ["Gold", "Titan"], capacities: ["256GB", "512GB"] },
+      "iPhone 17 Pro Max": { colors: ["Titanium", "Natural"], capacities: ["256GB", "512GB", "1TB"] }
     };
 
-    // Show/hide Liberty section
+    // Mostrar/ocultar sección Liberty
     providerSelect.addEventListener('change', () => {
       libertySection.classList.toggle('hidden', providerSelect.value !== "LibertyPR");
     });
 
-    // Update color/capacity dropdowns when device changes
+    // Actualizar colores/capacidades al cambiar dispositivo
     deviceSelect.addEventListener('change', () => {
       const device = deviceSelect.value;
       if (deviceOptions[device]) {
-        // Populate colors
-        colorSelect.innerHTML = "<option value=''>-- Select --</option>" +
+        colorSelect.innerHTML = "<option value=''>-- Seleccionar --</option>" +
           deviceOptions[device].colors.map(c => `<option value="${c}">${c}</option>`).join("");
         colorSection.classList.remove('hidden');
         colorSelect.required = true;
 
-        // Populate capacities
-        capacitySelect.innerHTML = "<option value=''>-- Select --</option>" +
+        capacitySelect.innerHTML = "<option value=''>-- Seleccionar --</option>" +
           deviceOptions[device].capacities.map(c => `<option value="${c}">${c}</option>`).join("");
         capacitySection.classList.remove('hidden');
         capacitySelect.required = true;
@@ -164,17 +160,17 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      msg.textContent = "Sending…";
+      msg.textContent = "Enviando…";
       msg.className = "";
 
-      // Extra check: Contact Number must be only digits
+      // Validación adicional de número de contacto
       if (!/^[0-9]+$/.test(contactField.value)) {
         msg.className = "error";
-        msg.textContent = "Contact number must contain only digits (no spaces or special characters)";
+        msg.textContent = "❌ El número de contacto solo debe contener dígitos (sin espacios, letras ni caracteres especiales)";
         return;
       }
 
-      // Base payload
+      // Payload
       const payload = {
         firstName: document.getElementById('firstName').value.trim(),
         lastName: document.getElementById('lastName').value.trim(),
@@ -185,10 +181,10 @@
         device: deviceSelect.value,
         color: colorSelect.value,
         capacity: capacitySelect.value,
+        consent: document.getElementById('consent').checked,
         submittedAt: new Date().toISOString()
       };
 
-      // LibertyPR: include extra field
       if (providerSelect.value === "LibertyPR") {
         payload.action = document.getElementById('action').value;
       }
@@ -203,7 +199,7 @@
         const text = await res.text();
         if (res.ok) {
           msg.className = "success";
-          msg.textContent = "Submitted successfully ✅";
+          msg.textContent = "Formulario enviado correctamente ✅";
           form.reset();
           libertySection.classList.add('hidden');
           colorSection.classList.add('hidden');
@@ -214,7 +210,34 @@
         }
       } catch (err) {
         msg.className = "error";
-        msg.textContent = "Failed to submit: " + err.message;
+        msg.textContent = "Fallo al enviar: " + err.message;
+      }
+    });
+
+    // Mensajes personalizados en español
+    const validations = [
+      { id: "firstName", msg: "Por favor ingresa tu nombre" },
+      { id: "lastName", msg: "Por favor ingresa tu apellido" },
+      { id: "email", msg: "Por favor ingresa un correo válido" },
+      { id: "business", msg: "Por favor ingresa el nombre del negocio" },
+      { id: "contact", msg: "Por favor ingresa un número de contacto" },
+      { id: "provider", msg: "Por favor selecciona un proveedor" },
+      { id: "action", msg: "Por favor selecciona una acción" },
+      { id: "device", msg: "Por favor selecciona un modelo de dispositivo" },
+      { id: "color", msg: "Por favor selecciona un color" },
+      { id: "capacity", msg: "Por favor selecciona una capacidad" },
+      { id: "consent", msg: "Debes aceptar el consentimiento para continuar" }
+    ];
+
+    validations.forEach(v => {
+      const el = document.getElementById(v.id);
+      if (el) {
+        el.oninvalid = function(e) {
+          e.target.setCustomValidity(v.msg);
+        };
+        el.oninput = function(e) {
+          e.target.setCustomValidity("");
+        };
       }
     });
   </script>
