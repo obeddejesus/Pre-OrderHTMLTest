@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Device Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f7f7fb; padding:40px; }
+    .form-container { max-width:640px; margin:auto; background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    h2 { margin-top:0; }
+    label { display:block; margin-top:12px; font-weight:bold; }
+    input, select, button {
+      width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-top:4px; box-sizing:border-box;
+    }
+    button { background:#00BBFF; color:#fff; font-weight:bold; border:none; cursor:pointer; margin-top:16px; }
+    button:hover { background:#005299; }
+    .hidden { display:none; }
+    .success { color:green; margin-top:12px; }
+    .error { color:red; margin-top:12px; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Customer Device Request</h2>
+    <form id="flowForm">
+
+      <!-- Nombre y Apellido -->
+      <label for="firstName">Nombre*</label>
+      <input id="firstName" name="firstName" required />
+
+      <label for="lastName">Apellido*</label>
+      <input id="lastName" name="lastName" required />
+
+      <label for="email">Correo electrónico*</label>
+      <input id="email" name="email" type="email" required />
+
+      <label for="business">Nombre del negocio*</label>
+      <input id="business" name="business" required />
+
+      <label for="contact">Número de contacto*</label>
+      <input 
+        id="contact" 
+        name="contact" 
+        type="text" 
+        required 
+        pattern="[0-9]+" 
+        title="Solo se permiten dígitos (sin espacios ni caracteres especiales)" 
+        maxlength="15"
+      />
+
+      <label for="provider">Proveedor*</label>
+      <select id="provider" name="provider" required>
+        <option value="">-- Seleccionar --</option>
+        <option value="LibertyPR">LibertyPR</option>
+        <option value="T-Mobile">T-Mobile</option>
+        <option value="Claro">Claro</option>
+        <option value="Other">Otro</option>
+      </select>
+
+      <!-- LibertyPR extra question -->
+      <div id="libertySection" class="hidden">
+        <label for="action">¿Qué deseas hacer?*</label>
+        <select id="action" name="action">
+          <option value="">-- Seleccionar --</option>
+          <option value="New Line">Nueva línea</option>
+          <option value="Change Device">Cambio de equipo</option>
+        </select>
+      </div>
+
+      <!-- Device selection -->
+      <label for="device">Modelo del dispositivo*</label>
+      <select id="device" name="device" required>
+        <option value="">-- Seleccionar --</option>
+        <option value="iPhone 17">iPhone 17</option>
+        <option value="iPhone 17 Air">iPhone 17 Air</option>
+        <option value="iPhone 17 Pro">iPhone 17 Pro</option>
+        <option value="iPhone 17 Pro Max">iPhone 17 Pro Max</option>
+        <option value="Samsung Galaxy S23">Samsung Galaxy S23</option>
+      </select>
+
+      <!-- Device Color (dynamic) -->
+      <div id="colorSection" class="hidden">
+        <label for="color">Color del dispositivo*</label>
+        <select id="color" name="color"></select>
+      </div>
+
+      <!-- Device Capacity (dynamic) -->
+      <div id="capacitySection" class="hidden">
+        <label for="capacity">Capacidad del dispositivo*</label>
+        <select id="capacity" name="capacity"></select>
+      </div>
+
+      <!-- Consent -->
+      <div style="margin-top:16px; display:flex; align-items:flex-start; gap:8px;">
+        <input 
+          type="checkbox" 
+          id="consent" 
+          name="consent" 
+          required 
+          style="width:18px; height:18px; margin-top:2px; cursor:pointer;"
+          aria-label="Consentimiento"
+        />
+        <label for="consent" style="font-size:14px; color:#333; line-height:1.4; cursor:pointer;">
+          ¡Permítenos conectar contigo! Al completar este formulario aceptas recibir comunicación sobre ofertas, promociones y servicios de Liberty Business.
+        </label>
+      </div>
+
+      <button type="submit">Enviar</button>
+      <div id="msg"></div>
+    </form>
+  </div>
+
+  <script>
+    const FLOW_URL = "https://prod-68.westus.logic.azure.com:443/workflows/477d1e2a09fb4d5eba05a9c4c8800a98/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EzBolja5p4JJdK2xwH-0Szv77OXsKj3qYjn1HsfAcbU"; 
+
+    const providerSelect = document.getElementById('provider');
+    const libertySection = document.getElementById('libertySection');
+    const deviceSelect   = document.getElementById('device');
+    const colorSection   = document.getElementById('colorSection');
+    const colorSelect    = document.getElementById('color');
+    const capacitySection= document.getElementById('capacitySection');
+    const capacitySelect = document.getElementById('capacity');
+    const contactField   = document.getElementById('contact');
+
+    // Catálogo con capacidades por dispositivo y color (independientes)
+    const catalog = {
+      "iPhone 17": {
+        colors: {
+          "Black":  ["128GB", "256GB"],
+          "Gold":   ["256GB", "512GB"],
+          "Blue":   ["128GB"]
+        }
+      },
+      "iPhone 17 Air": {
+        colors: {
+          "Clear":  ["128GB", "256GB"],
+          "Blue":   ["128GB", "256GB", "512GB"]
+        }
+      },
+      "iPhone 17 Pro": {
+        colors: {
+          "Gold":   ["256GB", "512GB"],
+          "Titan":  ["256GB", "512GB", "1TB"]
+        }
+      },
+      "iPhone 17 Pro Max": {
+        colors: {
+          "Silver":    ["256GB", "512GB"],
+          "Titanium":  ["256GB", "512GB", "1TB"],
+          "Natural":   ["256GB", "512GB"]
+        }
+      },
+      "Samsung Galaxy S23": {
+        colors: {
+          "Phantom Black": ["128GB", "256GB"],
+          "Cream":         ["256GB", "512GB"],
+          "Lavender":      ["128GB", "256GB", "512GB"]
+        }
+      }
+    };
+
+    // Helpers para renderizar opciones
+    function renderOptions(selectEl, list, placeholder = "-- Seleccionar --") {
+      selectEl.innerHTML = `<option value="">${placeholder}</option>` + list.map(v => `<option value="${v}">${v}</option>`).join("");
+    }
+
+    function updateColors() {
+      const device = deviceSelect.value;
+      const colors = device && catalog[device] ? Object.keys(catalog[device].colors) : [];
+      renderOptions(colorSelect, colors);
+      colorSection.classList.toggle('hidden', colors.length === 0);
+      colorSelect.required = colors.length > 0;
+
+      // Al cambiar de dispositivo, limpiamos selección de color/capacidad
+      colorSelect.value = "";
+      renderOptions(capacitySelect, []);
+      capacitySection.classList.add('hidden');
+      capacitySelect.required = false;
+    }
+
+    function updateCapacities() {
+      const device = deviceSelect.value;
+      const color  = colorSelect.value;
+      const caps = (catalog[device] && catalog[device].colors[color]) ? catalog[device].colors[color] : [];
+      renderOptions(capacitySelect, caps);
+      capacitySection.classList.toggle('hidden', caps.length === 0);
+      capacitySelect.required = caps.length > 0;
+    }
+
+    // Mostrar/ocultar sección Liberty
+    providerSelect.addEventListener('change', () => {
+      const
+</body>
+</html>
