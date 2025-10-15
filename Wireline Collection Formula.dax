@@ -1,0 +1,362 @@
+﻿--Wireline Collection Path for automation with PowerBI & Power Apps to send email via Emarsys to customers.
+
+--Wireline Comm Available Invoice Day 4
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "4"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+--Wireline Comm Invoice Due Date First Notice Email Day 23
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "23"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", FORMAT('All Files After 6/4/2025'[REPORT_DATE],"MM/dd/yyyy"),
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+--Wireline Comm Second Invoice is Available Late Fee Added Email Day 34
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "34"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+--Wireline Comm 1st Deliqnuency Notice Email Day 35
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "35"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+--Wireline Comm 2nd Delinquency SMS/IVR/EMAIL Day 40
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "40"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+--Wireline Comm 3rd Delinqunecy Email Day 45
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "45"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+--Wireline Comm Final Notice Before Suspension Pre-Suspend Call/Email Day 49
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "49"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+--Wireline Comm Suspension Email Day 50
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "50"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+
+--Wireline Comm LAs Notice Email Day 59
+
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "59"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+--Wireline Comm Email/IVR Days 63,67,70,74 & 77
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] IN {"63","67","70","74","77"}
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+
+--Wireline Comm Collactor Call/Email Before Cancellation Day 80
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "80"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+--Wireline Comm Cancellation Email Day 85
+
+EVALUATE
+SELECTCOLUMNS(
+    FILTER(
+        'All Files After 6/4/2025',
+        'All Files After 6/4/2025'[REPORT_DATE] = TODAY()
+        && (
+            'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Small Business" 
+            ||'All Files After 6/4/2025'[CUSTOMER_TYPE] = "Medium Business"
+        )
+        && 'All Files After 6/4/2025'[0-30] >= 0
+        && 'All Files After 6/4/2025'[DELINQUENCY AMOUNT] > 0
+        && 'All Files After 6/4/2025'[EMAIL_CONTACT] <> ""
+        && 'All Files After 6/4/2025'[Real Aging] = "85"
+        && 'All Files After 6/4/2025'[Special_Treatment_Acc.Sepcial Treatment] = "No"
+    ),
+    "Index", 'All Files After 6/4/2025'[Index],
+    "Report Date", 'All Files After 6/4/2025'[REPORT_DATE],
+    "Account Name", 'All Files After 6/4/2025'[ACCOUNT_NAME],
+    "Customer Type", 'All Files After 6/4/2025'[CUSTOMER_TYPE],
+    "Company Name", 'All Files After 6/4/2025'[CUSTOMER_NAME],
+    "Email", 'All Files After 6/4/2025'[EMAIL_CONTACT],
+    "AGING", 'All Files After 6/4/2025'[Real Aging],
+    "0-30", FORMAT('All Files After 6/4/2025'[0-30], "$#,0.00"),
+    "CURRENT BALANCE", Format('All Files After 6/4/2025'[CURRENT_BALANCE],"$#,0.00"),
+    "DELINQUENCY AMOUNT", Format('All Files After 6/4/2025'[DELINQUENCY AMOUNT],"$#,0.00")
+)
+
+
+
+
+

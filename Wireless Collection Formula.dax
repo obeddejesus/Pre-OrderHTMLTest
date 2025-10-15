@@ -1,0 +1,318 @@
+﻿//Wireless 964B AvailableInvoice
+
+
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY () -1
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Available Invoice", "Second Invoice is Available"}
+            && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+
+//Wireless 970B 1s2nd3rd4th Delinquency Notice SecondInvoice is Available
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY () -1
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"1st Delinquency Notice","2nd Delinquency Notice","3rd Delinquency Notice",
+            "4th Delinquency Notice"}
+            && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+//Wireless 969B Invoice Due Date
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY () -1
+        	&&lla_cons_collection_rpt[Total Amount] > 0.00
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Invoice Due Date"}
+            && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+//Wireless 975B Last Notice
+
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY () -1
+        	&&lla_cons_collection_rpt[Total Amount] > 0.00
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Last Notice"}
+             && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+
+// Wireless979B Late Fee Added
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY ()-1
+        	&&lla_cons_collection_rpt[Total Amount] > 0.00
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Late Fee Added"}
+            && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+//Wireless 973B Pre-Suspend
+
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY ()-1
+        	&&lla_cons_collection_rpt[Total Amount] > 0.00
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Pre-Suspend"}
+            && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+
+//Wireless 984B Suspension
+
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY ()-1
+        	&&lla_cons_collection_rpt[Total Amount] > 0.00
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Suspension"}
+            && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+
+//Wireless 985B Cancellation
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY () -1
+        	&&lla_cons_collection_rpt[Total Amount] > 0.00
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"Cancellation"}
+             && lla_cons_collection_rpt[Customer Full Name] <> "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+    "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
+
+//AC Nielsen
+
+
+EVALUATE
+SELECTCOLUMNS (
+    FILTER (
+        'lla_cons_collection_rpt',
+        DATEVALUE ( 'lla_cons_collection_rpt'[Report Date] ) = TODAY () -1
+            && 'lla_cons_collection_rpt'[Communication Needed] IN {"3rd Delinquency Notice"}
+         && lla_cons_collection_rpt[Customer Full Name] = "AC NIELSEN PR LLC"
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsAriaAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]
+            ) = TRUE ()
+            && LOOKUPVALUE (
+                'SF Billing Account'[PRB2B_IsMatrixxAccountCreated__c],
+                'SF Billing Account'[PR_Mobile_Billing_Number__c], 'lla_cons_collection_rpt'[BAN-CAN]        
+            ) = TRUE ()
+    ),
+    "Index", 'lla_cons_collection_rpt'[Index],
+    "Index BANCAN", 'lla_cons_collection_rpt'[Index BANCAN],
+    "Customer Full Name", 'lla_cons_collection_rpt'[Customer Full Name],
+    "Current Amount Due", FORMAT('lla_cons_collection_rpt'[Current],"$#,0.00"),
+    "Past Due Amount", FORMAT('lla_cons_collection_rpt'[Past Due Amount], "$#,0.00"),
+    "Total Amount Due", FORMAT('lla_cons_collection_rpt'[Total Amount], "$#,0.00"),
+    "BAN-CAN", 'lla_cons_collection_rpt'[BAN-CAN],
+    "B2B Last 4 CTN", 'lla_cons_collection_rpt'[B2B Last 4 CTN],
+         "Email", 'lla_cons_collection_rpt'[SF Parent Account.Contact Email],
+    "Phone SMS", 'lla_cons_collection_rpt'[SF Parent Account.Contact Phone SMS],
+    "Report Date", 'lla_cons_collection_rpt'[Report Date]
+)
+
+
